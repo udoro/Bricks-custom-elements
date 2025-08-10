@@ -24,6 +24,11 @@ class DWC_Element_Nav_Dropdown_Content extends \Bricks\Element {
     
     // Set control groups
     public function set_control_groups() {
+        $this->control_groups['html'] = [
+            'title' => esc_html__( 'HTML Tag', 'bricks' ),
+            'tab' => 'content',
+        ];
+        
         $this->control_groups['layout'] = [
             'title' => esc_html__( 'Layout', 'bricks' ),
             'tab' => 'content',
@@ -37,6 +42,17 @@ class DWC_Element_Nav_Dropdown_Content extends \Bricks\Element {
     
     // Set element controls
     public function set_controls() {
+        // HTML Tag Control
+        $this->controls['html_tag'] = [
+            'tab' => 'content',
+            'group' => 'html',
+            'label' => esc_html__( 'HTML Tag', 'bricks' ),
+            'type' => 'text',
+            'default' => 'ul',
+            'placeholder' => 'ul',
+            'description' => esc_html__( 'Enter the HTML tag for this element (e.g., ul, div, nav, section)', 'bricks' ),
+        ];
+        
         // Layout Controls
         $this->controls['dropdown_width'] = [
             'tab' => 'content',
@@ -81,6 +97,67 @@ class DWC_Element_Nav_Dropdown_Content extends \Bricks\Element {
                 'full' => esc_html__( 'Full Width', 'bricks' ),
             ],
             'default' => 'left',
+        ];
+        
+        $this->controls['dropdown_display'] = [
+            'tab' => 'content',
+            'group' => 'layout',
+            'label' => esc_html__( 'Display', 'bricks' ),
+            'type' => 'select',
+            'options' => [
+                'flex' => esc_html__( 'Flex', 'bricks' ),
+                'block' => esc_html__( 'Block', 'bricks' ),
+                'grid' => esc_html__( 'Grid', 'bricks' ),
+                'inline-flex' => esc_html__( 'Inline Flex', 'bricks' ),
+            ],
+            'default' => 'flex',
+            'css' => [
+                [
+                    'property' => 'display',
+                    'selector' => '&',
+                ],
+            ],
+        ];
+        
+        $this->controls['dropdown_direction'] = [
+            'tab' => 'content',
+            'group' => 'layout',
+            'label' => esc_html__( 'Direction', 'bricks' ),
+            'type' => 'select',
+            'options' => [
+                'column' => esc_html__( 'Column', 'bricks' ),
+                'row' => esc_html__( 'Row', 'bricks' ),
+                'column-reverse' => esc_html__( 'Column Reverse', 'bricks' ),
+                'row-reverse' => esc_html__( 'Row Reverse', 'bricks' ),
+            ],
+            'default' => 'column',
+            'required' => [ 'dropdown_display', '=', [ 'flex', 'inline-flex' ] ],
+            'css' => [
+                [
+                    'property' => 'flex-direction',
+                    'selector' => '&',
+                ],
+            ],
+        ];
+        
+        $this->controls['dropdown_wrap'] = [
+            'tab' => 'content',
+            'group' => 'layout',
+            'label' => esc_html__( 'Flex Wrap', 'bricks' ),
+            'type' => 'select',
+            'options' => [
+                'nowrap' => esc_html__( 'No Wrap', 'bricks' ),
+                'wrap' => esc_html__( 'Wrap', 'bricks' ),
+                'wrap-reverse' => esc_html__( 'Wrap Reverse', 'bricks' ),
+            ],
+            'default' => 'nowrap',
+            'required' => [ 'dropdown_display', '=', [ 'flex', 'inline-flex' ] ],
+            'css' => [
+                [
+                    'property' => 'flex-wrap',
+                    'selector' => '&',
+                ],
+            ],
         ];
         
         // Style Controls
@@ -152,9 +229,29 @@ class DWC_Element_Nav_Dropdown_Content extends \Bricks\Element {
         ];
     }
     
+    // Validate HTML tag
+    private function validate_html_tag( $tag ) {
+        // List of allowed HTML tags for security
+        $allowed_tags = [
+            'ul', 'ol', 'div', 'nav', 'section', 'aside', 'article', 'header', 'footer', 
+            'main', 'menu', 'menuitem', 'details', 'summary', 'figure', 'figcaption',
+            'dl', 'dt', 'dd', 'table', 'tbody', 'thead', 'tfoot', 'tr', 'td', 'th'
+        ];
+        
+        // Clean the tag input
+        $tag = strtolower( trim( $tag ) );
+        $tag = preg_replace( '/[^a-z0-9]/', '', $tag ); // Remove non-alphanumeric characters
+        
+        // Return valid tag or default to 'ul'
+        return in_array( $tag, $allowed_tags ) ? $tag : 'ul';
+    }
+    
     // Render element
     public function render() {
         $settings = $this->settings;
+        
+        // Get and validate HTML tag
+        $html_tag = $this->validate_html_tag( $settings['html_tag'] ?? 'ul' );
         
         // Set dropdown content attributes
         $content_classes = [ 'dwc-dropdown-content' ];
@@ -165,12 +262,19 @@ class DWC_Element_Nav_Dropdown_Content extends \Bricks\Element {
         
         $this->set_attribute( '_root', 'class', $content_classes );
         
-        echo "<ul {$this->render_attributes( '_root' )}>";
+        // Add role for accessibility based on tag
+        if ( $html_tag === 'ul' || $html_tag === 'ol' ) {
+            $this->set_attribute( '_root', 'role', 'menu' );
+        } else if ( $html_tag === 'nav' ) {
+            $this->set_attribute( '_root', 'role', 'navigation' );
+        }
+        
+        echo "<{$html_tag} {$this->render_attributes( '_root' )}>";
         
         // Render nested nav items
         echo \Bricks\Frontend::render_children( $this );
         
-        echo '</ul>';
+        echo "</{$html_tag}>";
     }
     
     // Define nestable children structure - only allow nav items
