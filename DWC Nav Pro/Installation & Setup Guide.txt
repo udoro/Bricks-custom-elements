@@ -1,0 +1,200 @@
+# DWC Nav Pro Plugin - Installation & Setup Guide
+
+## Overview
+The DWC Nav Pro plugin provides a comprehensive, responsive navigation system for Bricks Builder with nestable components, full customization options, and mobile-friendly features.
+
+## Features
+- ✅ Fully responsive navigation with customizable breakpoints
+- ✅ Nestable architecture (Container → Items → Dropdowns)
+- ✅ Multiple mobile menu types (Overlay, Slide, Dropdown)
+- ✅ Customizable mobile toggle with animations
+- ✅ Multi-level dropdown support
+- ✅ Keyboard navigation and accessibility features
+- ✅ Vanilla JavaScript (no jQuery dependency on frontend)
+- ✅ Full Bricks Builder integration with live preview
+
+## Directory Structure
+
+Create the following directory structure in your `/wp-content/plugins/` folder:
+
+```
+dwc-nav-pro/
+├── dwc-nav-pro.php                      (Main plugin file)
+├── elements/
+│   ├── element-dwc-nav-container.php    (Container element)
+│   ├── element-dwc-nav-item.php         (Navigation item element)
+│   ├── element-dwc-nav-dropdown.php     (Dropdown element)
+│   └── element-dwc-nav-toggle.php       (Mobile toggle element)
+├── assets/
+│   ├── css/
+│   │   └── frontend.css                 (Frontend styles)
+│   └── js/
+│       ├── frontend.js                  (Frontend JavaScript)
+│       └── builder.js                   (Builder JavaScript)
+└── readme.txt                          (Plugin documentation)
+```
+
+## Installation Steps
+
+### Step 1: Create Plugin Directory
+1. Navigate to `/wp-content/plugins/`
+2. Create a new folder called `dwc-nav-pro`
+
+### Step 2: Add Main Plugin File
+Create `dwc-nav-pro.php` in the root directory with the main plugin code.
+
+### Step 3: Create Elements Directory
+1. Create the `elements/` subdirectory
+2. Add all four element PHP files:
+   - `element-dwc-nav-container.php`
+   - `element-dwc-nav-item.php`
+   - `element-dwc-nav-dropdown.php`
+   - `element-dwc-nav-toggle.php`
+
+### Step 4: Create Assets Directory
+1. Create the `assets/` directory with `css/` and `js/` subdirectories
+2. Add the CSS file: `assets/css/frontend.css`
+3. Add the JavaScript files:
+   - `assets/js/frontend.js`
+   - `assets/js/builder.js`
+
+### Step 5: Activate Plugin
+1. Go to WordPress Admin → Plugins
+2. Find "DWC Nav Pro for Bricks" 
+3. Click "Activate"
+
+## Usage Guide
+
+### Building a Navigation
+
+#### 1. Add the Container
+1. In Bricks Builder, search for "DWC Nav Container"
+2. Drag it to your desired location
+3. Configure responsive settings, mobile breakpoint, and menu type
+
+#### 2. Add Navigation Items
+1. Inside the container, add "DWC Nav Item" elements
+2. Configure text, links, icons, and styling for each item
+3. Set active states for current pages
+
+#### 3. Add Dropdowns (Optional)
+1. Inside any nav item, add a "DWC Nav Dropdown" element
+2. Configure dropdown position, animation, and styling
+3. Add more nav items inside the dropdown for submenu items
+
+#### 4. Customize Mobile Toggle (Optional)
+1. Add a "DWC Mobile Toggle" element inside the container
+2. Choose between hamburger, icon, text, or combined styles
+3. Configure animations and styling
+
+### Element Hierarchy
+```
+DWC Nav Container
+├── DWC Nav Item (Home)
+├── DWC Nav Item (About)
+├── DWC Nav Item (Services)
+│   └── DWC Nav Dropdown
+│       ├── DWC Nav Item (Web Design)
+│       ├── DWC Nav Item (Development)
+│       └── DWC Nav Item (SEO)
+├── DWC Nav Item (Contact)
+└── DWC Mobile Toggle (optional)
+```
+
+## Configuration Options
+
+### Container Settings
+- **Layout**: Direction (horizontal/vertical), alignment, gap
+- **Responsive**: Mobile breakpoint (480px-1024px)
+- **Mobile Menu**: Type (overlay/slide/dropdown), slide direction
+- **Styling**: Background, padding, border for desktop and mobile
+
+### Item Settings
+- **Content**: Text, description, icon with positioning
+- **Link**: URL, target, active state
+- **Styling**: Typography, colors, hover effects, active styles
+
+### Dropdown Settings
+- **Layout**: Width, columns, position (left/right/center/full)
+- **Animation**: Type (fade/slide/scale), duration, hover delay
+- **Styling**: Background, padding, border, shadow
+
+### Toggle Settings
+- **Content**: Type (hamburger/icon/text/both), custom icons and text
+- **Styling**: Size, colors, padding, border
+- **Animation**: Hamburger animations (cross/arrow/spin), speed
+
+## Responsive Behavior
+
+The navigation automatically switches to mobile mode based on your chosen breakpoint:
+
+- **Desktop Mode**: Horizontal/vertical navigation with hover dropdowns
+- **Mobile Mode**: Toggle button with overlay/slide/dropdown menu
+- **Smooth Transitions**: Animated transitions between states
+
+## Accessibility Features
+
+- ✅ Keyboard navigation support (Tab, Enter, Escape)
+- ✅ ARIA attributes for screen readers
+- ✅ Focus management and trapping
+- ✅ Semantic HTML structure
+- ✅ High contrast focus indicators
+
+## Browser Support
+
+- ✅ Chrome 60+
+- ✅ Firefox 55+
+- ✅ Safari 12+
+- ✅ Edge 79+
+- ✅ Mobile browsers (iOS Safari, Chrome Mobile)
+
+## Advanced Customization
+
+### Custom CSS Classes
+Each element includes CSS classes for custom styling:
+- `.dwc-nav-container` - Main container
+- `.dwc-nav-item` - Navigation items
+- `.dwc-nav-dropdown` - Dropdown menus
+- `.dwc-mobile-toggle` - Mobile toggle button
+
+### JavaScript Events
+The plugin fires custom events for integration:
+- `dwc:menuOpen` - Mobile menu opened
+- `dwc:menuClose` - Mobile menu closed
+- `dwc:dropdownOpen` - Dropdown opened
+- `dwc:dropdownClose` - Dropdown closed
+
+### PHP Hooks
+Filter hooks for customization:
+- `dwc_nav_container_classes` - Modify container classes
+- `dwc_nav_item_classes` - Modify item classes
+- `dwc_nav_mobile_breakpoint` - Override mobile breakpoint
+
+## Troubleshooting
+
+### Navigation Not Showing
+1. Ensure Bricks Builder is installed and active
+2. Check that all files are uploaded correctly
+3. Clear any caching plugins
+4. Verify plugin is activated
+
+### Mobile Menu Not Working
+1. Check JavaScript console for errors
+2. Ensure frontend.js is loading properly
+3. Verify mobile breakpoint setting
+4. Test without other plugins active
+
+### Styling Issues
+1. Check for CSS conflicts with theme
+2. Use browser developer tools to inspect styles
+3. Ensure frontend.css is loading
+4. Add custom CSS with higher specificity
+
+## Support & Updates
+
+For support, bug reports, or feature requests:
+- Check the plugin documentation
+- Review common troubleshooting steps
+- Contact the developer with specific details
+
+Remember to backup your site before installing any new plugins!
